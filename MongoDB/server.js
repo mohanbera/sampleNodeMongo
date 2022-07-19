@@ -1,12 +1,12 @@
 const express = require('express');
-const app = express();
+const server = express();
 const mongoose = require('mongoose');
 const cors = require("cors");
 
-app.use(cors({
+server.use(cors({
     origin: "http://localhost:4200"
 }))
-app.use(express.json());
+server.use(express.json());
 
 async function connectMongo() {
     await mongoose.connect(
@@ -31,16 +31,16 @@ const Sample = mongoose.model('sample', schema);
 
 connectMongo();
 
-app.get('/', (req, res) => {
+server.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.get('/data', async (req, res) => {
+server.get('/data', async (req, res) => {
     const data = await Sample.find().limit(20);
     res.send(data);
 });
 
-app.post('/data', async (req, res) => {
+server.post('/data', async (req, res) => {
     if(req.body.filters) {
         const filters = req.body.filters;
         const query = {};
@@ -56,6 +56,6 @@ app.post('/data', async (req, res) => {
     }
 });
 
-app.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 3000);
 
 //
