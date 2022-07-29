@@ -1,24 +1,14 @@
-
-
 const pool = require('../db/db');
 const queries = require('../queries/queries');
 
-function getStudents() {
-    return new Promise((resolve, reject) => {
-        pool.query(queries.getAllInfo, (error, result) => {
-            if(error) reject(error);
-            return resolve(result.rows);
-        });
-    });
+async function getStudents() {
+    const result = await pool.query(queries.getAllInfo);
+    return result.rows;
 }
 
-function getStudent(id) {
-    return new Promise((resolve, reject) => {
-        pool.query(queries.getStudent,[id], (error, result) => {
-            if(error) reject(error);
-            resolve(result.rows);
-        });
-    });
+async function getStudent(id) {
+    const result = await pool.query(queries.getStudent, [id]);
+    return result.rows;
 }
 
 module.exports = {
